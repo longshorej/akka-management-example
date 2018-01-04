@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: app1
+    actorSystemName: my-system
+  name: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+        actorSystemName: my-system
+    spec:
+      containers:
+      - name: example
+        image: akka-cluster-tooling-example-app1:0.1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        # akka remoting
+        - name: remoting
+          containerPort: 2551
+          protocol: TCP
+        # akka-management bootstrap
+        - name: akka-mgmt-http
+          containerPort: 19999
+          protocol: TCP
+        # app's http interface
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+
